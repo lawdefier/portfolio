@@ -11,12 +11,12 @@
     
     <style>
         :root {
-            --bg-color: #0f1115;
+            --bg-color: #120e0e;
             --text-primary: #f3f4f6;
-            --text-secondary: #9ca3af;
-            --accent-primary: #8b5cf6;
-            --accent-secondary: #3b82f6;
-            --card-bg: rgba(31, 34, 41, 0.6);
+            --text-secondary: #a39c9c;
+            --accent-primary: #8b1c1c;
+            --accent-secondary: #d93838;
+            --card-bg: rgba(31, 25, 25, 0.6);
             --card-border: rgba(255, 255, 255, 0.05);
             --glass-blur: blur(12px);
         }
@@ -34,8 +34,8 @@
             line-height: 1.6;
             overflow-x: hidden;
             background-image: 
-                radial-gradient(circle at 15% 50%, rgba(139, 92, 246, 0.15), transparent 25%),
-                radial-gradient(circle at 85% 30%, rgba(59, 130, 246, 0.15), transparent 25%);
+                radial-gradient(circle at 15% 50%, rgba(139, 28, 28, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(217, 56, 56, 0.1), transparent 25%);
             background-attachment: fixed;
         }
 
@@ -115,12 +115,12 @@
         .btn-primary {
             background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
             color: white;
-            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.3);
+            box-shadow: 0 4px 15px rgba(139, 28, 28, 0.3);
         }
 
         .btn-primary:hover {
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(139, 92, 246, 0.4);
+            box-shadow: 0 6px 20px rgba(139, 28, 28, 0.4);
         }
 
         .btn-secondary {
@@ -184,7 +184,7 @@
 
         .card:hover {
             transform: translateY(-5px);
-            border-color: rgba(139, 92, 246, 0.3);
+            border-color: rgba(139, 28, 28, 0.3);
         }
 
         .card-icon {
@@ -213,8 +213,8 @@
         }
 
         .tag {
-            background: rgba(139, 92, 246, 0.1);
-            color: #d8b4fe;
+            background: rgba(139, 28, 28, 0.2);
+            color: #fca5a5;
             padding: 0.25rem 0.75rem;
             border-radius: 999px;
             font-size: 0.75rem;
@@ -245,6 +245,17 @@
         .delay-2 { animation-delay: 0.2s; }
         .delay-3 { animation-delay: 0.3s; }
 
+        /* --- Profile Image --- */
+        .profile-img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 3px solid var(--accent-primary);
+            margin-bottom: 2rem;
+            box-shadow: 0 8px 25px rgba(139, 28, 28, 0.4);
+        }
+
         /* Responsive */
         @media (max-width: 768px) {
             section {
@@ -267,9 +278,10 @@
         <!-- Header / Hero -->
         <header id="home">
             <div class="hero-content">
-                <span class="tagline animate-up">Aspiring Builder</span>
-                <h1 class="animate-up delay-1">Hello, I'm Wahaj.</h1>
-                <p class="hero-desc animate-up delay-2">
+                <img src="1779026931215.jpeg" alt="Wahaj" class="profile-img animate-up">
+                <span class="tagline animate-up delay-1">Aspiring Builder</span>
+                <h1 class="animate-up delay-2">Hello, I'm Wahaj.</h1>
+                <p class="hero-desc animate-up delay-3">
                     I build systems and models that make a difference. Currently exploring logistics optimization and financial forecasting. 
                 </p>
                 <div class="links-group animate-up delay-3">
