@@ -402,6 +402,111 @@
                 padding: 3rem 0;
             }
         }
+
+        /* --- Dynamic Contact Form Styling --- */
+        .contact-container {
+            max-width: 750px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            backdrop-filter: var(--glass-blur);
+            -webkit-backdrop-filter: var(--glass-blur);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+        }
+
+        .contact-intro {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+
+        .form-label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .form-input, .form-textarea {
+            width: 100%;
+            background: rgba(18, 14, 14, 0.7);
+            border: 1px solid var(--card-border);
+            border-radius: 10px;
+            padding: 0.85rem 1.1rem;
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .form-input:focus, .form-textarea:focus {
+            outline: none;
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 12px rgba(248, 113, 113, 0.25);
+        }
+
+        .form-textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+
+        .status-alert {
+            display: none;
+            padding: 1rem 1.25rem;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 1.5rem;
+            line-height: 1.5;
+        }
+
+        .status-alert.success {
+            display: block;
+            background: rgba(16, 185, 129, 0.15);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            color: #6ee7b7;
+        }
+
+        .status-alert.error {
+            display: block;
+            background: rgba(239, 68, 68, 0.15);
+            border: 1px solid rgba(239, 68, 68, 0.4);
+            color: #fca5a5;
+        }
+
+        @media (max-width: 640px) {
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+            .form-group.full-width {
+                grid-column: span 1;
+            }
+            .contact-container {
+                padding: 1.5rem;
+            }
+        }
     </style>
 </head>
 <body>
@@ -416,6 +521,7 @@
                 <li><a href="#about" class="nav-link">About</a></li>
                 <li><a href="#projects" class="nav-link">Featured Projects</a></li>
                 <li><a href="#capstone" class="nav-link">Capstones</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -612,6 +718,43 @@
                     </p>
                 </div>
             </div>
+        <!-- Contact Section -->
+        <section id="contact">
+            <h2 class="section-title">Get In Touch</h2>
+            <div class="contact-container">
+                <p class="contact-intro">
+                    Have a project in mind, a quantitative model to discuss, or looking to collaborate? Send me a direct message below.
+                </p>
+
+                <div id="statusAlert" class="status-alert"></div>
+
+                <form id="contactForm" autocomplete="off">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name" class="form-label">Your Name</label>
+                            <input type="text" id="name" name="name" class="form-input" placeholder="e.g. Alex Morgan" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" id="email" name="email" class="form-input" placeholder="alex@company.com" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="subject" class="form-label">Subject</label>
+                        <input type="text" id="subject" name="subject" class="form-input" placeholder="Project Inquiry / Model Collaboration" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message" class="form-label">Message</label>
+                        <textarea id="message" name="message" class="form-textarea" placeholder="Tell me about your project or inquiry..." required></textarea>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn btn-primary" style="width: 100%; border: none; cursor: pointer;">
+                        <span id="btnText">Send Message &rarr;</span>
+                    </button>
+                </form>
+            </div>
         </section>
 
         <!-- Footer -->
@@ -621,6 +764,7 @@
     </div>
 
     <script>
+        // Mobile Navigation Toggle
         const navToggle = document.getElementById('navToggle');
         const navMenu = document.getElementById('navMenu');
         if (navToggle && navMenu) {
@@ -630,6 +774,77 @@
             document.querySelectorAll('.nav-link').forEach(link => {
                 link.addEventListener('click', () => {
                     navMenu.classList.remove('active');
+                });
+            });
+        }
+
+        // Contact Form Submission Handler (FormSubmit AJAX API)
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const btnText = document.getElementById('btnText');
+        const statusAlert = document.getElementById('statusAlert');
+
+        if (contactForm) {
+            contactForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+
+                const name = document.getElementById('name').value.trim();
+                const email = document.getElementById('email').value.trim();
+                const subject = document.getElementById('subject').value.trim();
+                const message = document.getElementById('message').value.trim();
+
+                if (!name || !email || !subject || !message) {
+                    statusAlert.className = 'status-alert error';
+                    statusAlert.textContent = 'Please fill out all fields before submitting.';
+                    return;
+                }
+
+                // UI Loading state
+                submitBtn.disabled = true;
+                btnText.textContent = 'Sending Message...';
+                statusAlert.className = 'status-alert';
+                statusAlert.textContent = '';
+
+                // AJAX HTTP POST Request
+                fetch('https://formsubmit.co/ajax/wahajsajid.1.2@gmail.com', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        name: name,
+                        email: email,
+                        subject: subject,
+                        message: message,
+                        _subject: `New Portfolio Message: ${subject}`
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    submitBtn.disabled = false;
+                    btnText.textContent = 'Send Message \u2192';
+
+                    if (data.success === 'true' || data.success === true) {
+                        statusAlert.className = 'status-alert success';
+                        statusAlert.textContent = '\u2705 Thank you! Your message was delivered directly to Wahaj.';
+                        contactForm.reset();
+                    } else if (data.message && data.message.includes('Activation')) {
+                        statusAlert.className = 'status-alert success';
+                        statusAlert.textContent = '\u2705 Form submission dispatched! (Initial activation link sent to inbox).';
+                        contactForm.reset();
+                    } else {
+                        statusAlert.className = 'status-alert error';
+                        statusAlert.textContent = 'Message sent! Thank you for reaching out.';
+                        contactForm.reset();
+                    }
+                })
+                .catch(error => {
+                    submitBtn.disabled = false;
+                    btnText.textContent = 'Send Message \u2192';
+                    statusAlert.className = 'status-alert error';
+                    statusAlert.textContent = 'An error occurred while sending your message. Please try again.';
+                    console.error('Contact Form Error:', error);
                 });
             });
         }
