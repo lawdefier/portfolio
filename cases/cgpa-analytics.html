@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student CGPA Predictive Analytics | Case Study - Wahaj</title>
+    <meta name="description" content="Predicting academic performance using Ridge, Lasso, and XGBoost machine learning models with SHAP interpretability.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #120e0e;
+            --text-primary: #f3f4f6;
+            --text-secondary: #a39c9c;
+            --accent-primary: #8b1c1c;
+            --accent-secondary: #d93838;
+            --card-bg: rgba(31, 25, 25, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --glass-blur: blur(12px);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.7;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(139, 28, 28, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(217, 56, 56, 0.1), transparent 25%);
+            background-attachment: fixed;
+        }
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+        a { color: inherit; text-decoration: none; }
+        
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(18, 14, 14, 0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border); padding: 1rem 0;
+        }
+        .nav-container {
+            max-width: 900px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .back-link {
+            font-size: 0.95rem; font-weight: 600; color: var(--accent-secondary);
+            display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.2s ease;
+        }
+        .back-link:hover { transform: translateX(-3px); }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 7rem 2rem 4rem; }
+
+        .badge {
+            display: inline-block; padding: 0.35rem 0.85rem; border-radius: 999px;
+            background: rgba(139, 28, 28, 0.25); color: #fca5a5;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 1.2rem;
+        }
+        h1.title { font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 1rem; line-height: 1.2; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; }
+
+        .meta-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem; padding: 1.5rem 2rem; background: var(--card-bg);
+            border: 1px solid var(--card-border); border-radius: 12px;
+            backdrop-filter: var(--glass-blur); margin-bottom: 3.5rem;
+        }
+        .meta-item label { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.3rem; }
+        .meta-item span { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+
+        .content-section { margin-bottom: 3rem; }
+        .content-section h2 { font-size: 1.8rem; margin-bottom: 1.2rem; position: relative; display: inline-block; }
+        .content-section h2::after {
+            content: ''; position: absolute; bottom: -6px; left: 0; width: 35px; height: 3px;
+            background: var(--accent-primary); border-radius: 2px;
+        }
+        .content-section p { color: var(--text-secondary); margin-bottom: 1rem; font-size: 1.05rem; }
+        .content-section ul { color: var(--text-secondary); margin-left: 1.5rem; margin-bottom: 1rem; }
+        .content-section li { margin-bottom: 0.5rem; }
+
+        .code-box {
+            background: #0a0808; border: 1px solid var(--card-border);
+            border-radius: 10px; padding: 1.2rem 1.5rem; font-family: monospace;
+            font-size: 0.9rem; color: #e5e7eb; overflow-x: auto; margin: 1.5rem 0;
+        }
+
+        .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 3rem; }
+        .btn {
+            padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-secondary { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-primary); }
+
+        footer { text-align: center; padding: 3rem 0; border-top: 1px solid var(--card-border); color: var(--text-secondary); margin-top: 4rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html#projects" class="back-link">&larr; Back to Portfolio</a>
+            <span style="font-weight: 700; font-family: 'Outfit';">Student CGPA Analytics</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <span class="badge">Machine Learning & Data Science</span>
+        <h1 class="title">Student CGPA Predictive Analytics</h1>
+        <p class="subtitle">Predicting academic outcomes from student behavioral habits using Ridge, Lasso, and XGBoost models coupled with SHAP explainability.</p>
+
+        <div class="meta-grid">
+            <div class="meta-item">
+                <label>Role</label>
+                <span>Data Science Lead</span>
+            </div>
+            <div class="meta-item">
+                <label>Tech Stack</label>
+                <span>Python, Scikit-Learn, XGBoost, SHAP</span>
+            </div>
+            <div class="meta-item">
+                <label>Accuracy</label>
+                <span>~90% R² Score</span>
+            </div>
+            <div class="meta-item">
+                <label>Dataset</label>
+                <span>Behavioral & Study Habit Survey Data</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Problem Statement</h2>
+            <p>Identifying early indicators of student academic struggle allows universities to offer timely academic support. However, raw academic scores rarely explain *why* performance drops. This project built a predictive pipeline linking study patterns, sleep routines, and attendance habits directly to predicted CGPA metrics.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>ML Modeling & Pipeline</h2>
+            <p>We engineered features from survey responses, performed outlier removal via IQR filtering, and evaluated multiple regression algorithms:</p>
+            <ul>
+                <li><strong>Ridge & Lasso Regression:</strong> Established baseline linear relationships and evaluated L1/L2 regularization penalties to prevent overfitting.</li>
+                <li><strong>XGBoost Regressor:</strong> Captured non-linear interactions between study hours, sleep schedules, and course load. Achieved peak R² accuracy near ~90%.</li>
+                <li><strong>SHAP (SHapley Additive exPlanations):</strong> Provided model explainability, highlighting daily study consistency and attendance as the top drivers of high CGPA.</li>
+            </ul>
+
+            <div class="code-box">
+# Model Evaluation Pipeline (Python excerpt)
+from xgboost import XGBRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+import shap
+
+xgb_model = XGBRegressor(n_estimators=100, max_depth=4, learning_rate=0.05)
+xgb_model.fit(X_train, y_train)
+
+y_pred = xgb_model.predict(X_test)
+print(f"R2 Score: {r2_score(y_test, y_pred):.4f}")
+print(f"RMSE: {mean_squared_error(y_test, y_pred, squared=False):.4f}")
+
+# Compute SHAP feature contributions
+explainer = shap.Explainer(xgb_model)
+shap_values = explainer(X_test)
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Key Takeaways</h2>
+            <p>Combining tree-based gradient boosting with SHAP values transformed a black-box model into actionable educational insights, proving that study routine consistency outweighs cramming hours.</p>
+        </div>
+
+        <div class="btn-group">
+            <a href="https://github.com/lawdefier" target="_blank" class="btn btn-secondary">GitHub Repository</a>
+            <a href="../index.html#projects" class="btn btn-primary">&larr; Back to Featured Projects</a>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Wahaj Sajid. Built for FlyRank.</p>
+        </footer>
+    </div>
+
+</body>
+</html>

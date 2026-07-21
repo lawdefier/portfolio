@@ -256,33 +256,104 @@
             box-shadow: 0 8px 25px rgba(139, 28, 28, 0.4);
         }
 
-        /* Responsive */
+        /* --- Sticky Navigation Bar --- */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            background: rgba(18, 14, 14, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border);
+            padding: 1rem 0;
+        }
+
+        .nav-container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-brand {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.3rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #fff, var(--accent-secondary));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 1.8rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .card-action {
+            margin-top: 1.5rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--accent-secondary);
+            transition: gap 0.2s ease;
+        }
+
+        .card:hover .card-action {
+            gap: 0.7rem;
+            color: #ef4444;
+        }
+
+        /* Responsive Navbar */
         @media (max-width: 768px) {
-            section {
-                padding: 4rem 0;
-            }
-            .links-group {
-                flex-direction: column;
-                width: 100%;
-            }
-            .btn {
-                width: 100%;
-                justify-content: center;
+            .nav-menu {
+                gap: 1rem;
+                font-size: 0.85rem;
             }
         }
     </style>
 </head>
 <body>
 
-    <div class="container">
+    <!-- Navigation Header -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="#home" class="nav-brand">Wahaj Sajid</a>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link">Home</a></li>
+                <li><a href="#about" class="nav-link">About</a></li>
+                <li><a href="#projects" class="nav-link">Featured Projects</a></li>
+                <li><a href="#capstone" class="nav-link">Capstones</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="container" style="padding-top: 5rem;">
         <!-- Header / Hero -->
         <header id="home">
             <div class="hero-content">
                 <img src="pfp.png" alt="Wahaj" class="profile-img animate-up">
-                <span class="tagline animate-up delay-1">Aspiring Builder</span>
+                <span class="tagline animate-up delay-1">Aspiring Builder & Quantitative Analyst</span>
                 <h1 class="animate-up delay-2">Hello, I'm Wahaj.</h1>
                 <p class="hero-desc animate-up delay-3">
-                    I build systems and models that make a difference. Currently exploring logistics optimization and financial forecasting. 
+                    I build practical risk engines, machine learning pipelines, and backend systems that solve complex optimization problems. 
                 </p>
                 <div class="links-group animate-up delay-3">
                     <a href="https://www.linkedin.com/in/wahaj-sajid/" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
@@ -309,7 +380,7 @@
         <section id="about">
             <h2 class="section-title">About Me</h2>
             <p class="about-text">
-                I am a passionate builder and problem solver. I enjoy tackling complex challenges and creating solutions that are both elegant and practical. Whether I'm diving into the intricacies of logistics or exploring predictive models in finance, my goal is always to deliver impactful results and learn continuously along the way.
+                I design and deploy practical risk and market trend forecasting models that transform historical volatility patterns into clear, actionable predictions. I build these predictive engines specifically for early stage founders and platforms needing high-performance data-driven tools. Whether optimizing supply chains or engineering probabilistic diagnostic models, my focus is delivering clear, high-impact systems.
             </p>
         </section>
 
@@ -319,7 +390,7 @@
             <div class="projects-grid">
                 
                 <!-- Bits N Bytes Logistics -->
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/bits-n-bytes.html'" style="cursor: pointer;">
                     <div class="card-icon">📦</div>
                     <h3 class="card-title">Bits N Bytes Logistics</h3>
                     <p class="card-desc">
@@ -329,10 +400,11 @@
                         <span class="tag">System Design</span>
                         <span class="tag">Optimization</span>
                     </div>
+                    <a href="cases/bits-n-bytes.html" class="card-action">View Case Study &rarr;</a>
                 </div>
                 
                 <!-- Project 3 -->
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/cgpa-analytics.html'" style="cursor: pointer;">
                     <div class="card-icon">📊</div>
                     <h3 class="card-title">Student CGPA Predictive Analytics</h3>
                     <p class="card-desc">
@@ -343,10 +415,11 @@
                         <span class="tag">Data Science</span>
                         <span class="tag">XGBoost</span>
                     </div>
+                    <a href="cases/cgpa-analytics.html" class="card-action">View Case Study &rarr;</a>
                 </div>
 
                 <!-- Project 4 -->
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/social-network.html'" style="cursor: pointer;">
                     <div class="card-icon">🕸️</div>
                     <h3 class="card-title">Social Network System (C++)</h3>
                     <p class="card-desc">
@@ -357,10 +430,11 @@
                         <span class="tag">Data Structures</span>
                         <span class="tag">Algorithms</span>
                     </div>
+                    <a href="cases/social-network.html" class="card-action">View Case Study &rarr;</a>
                 </div>
 
                 <!-- Project 5 -->
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/rpg-game.html'" style="cursor: pointer;">
                     <div class="card-icon">🐉</div>
                     <h3 class="card-title">Text Based RPG (D&D Inspired)</h3>
                     <p class="card-desc">
@@ -371,10 +445,11 @@
                         <span class="tag">UX/UI</span>
                         <span class="tag">Programming</span>
                     </div>
+                    <a href="cases/rpg-game.html" class="card-action">View Case Study &rarr;</a>
                 </div>
 
                 <!-- Project 6 -->
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/forgotten-by-law.html'" style="cursor: pointer;">
                     <div class="card-icon">🎬</div>
                     <h3 class="card-title">Forgotten by Law (Documentary)</h3>
                     <p class="card-desc">
@@ -384,10 +459,11 @@
                         <span class="tag">Video Production</span>
                         <span class="tag">Storytelling</span>
                     </div>
+                    <a href="cases/forgotten-by-law.html" class="card-action">View Case Study &rarr;</a>
                 </div>
 
                 <!-- Project 7 -->
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/kamra-initiative.html'" style="cursor: pointer;">
                     <div class="card-icon">🌍</div>
                     <h3 class="card-title">Kamra Village Eco-Initiative</h3>
                     <p class="card-desc">
@@ -397,10 +473,11 @@
                         <span class="tag">Film Production</span>
                         <span class="tag">Leadership</span>
                     </div>
+                    <a href="cases/kamra-initiative.html" class="card-action">View Case Study &rarr;</a>
                 </div>
 
                 <!-- Project 9 -->
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/market-forecaster.html'" style="cursor: pointer;">
                     <div class="card-icon">📈</div>
                     <h3 class="card-title">Market Volatility Forecaster</h3>
                     <p class="card-desc">
@@ -410,17 +487,18 @@
                         <span class="tag">Data Science</span>
                         <span class="tag">Finance</span>
                     </div>
+                    <a href="cases/market-forecaster.html" class="card-action">View Case Study &rarr;</a>
                 </div>
 
             </div>
         </section>
 
         <!-- Capstone Projects Section -->
-        <section id="future">
+        <section id="capstone">
             <h2 class="section-title">Capstone Projects</h2>
             <div class="projects-grid">
                 
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/crimewatch.html'" style="cursor: pointer;">
                     <div class="card-icon">🚔</div>
                     <h3 class="card-title">CrimeWatch Pakistan: FIR Management</h3>
                     <p class="card-desc">
@@ -431,9 +509,10 @@
                         <span class="tag">Django</span>
                         <span class="tag">Full-Stack</span>
                     </div>
+                    <a href="cases/crimewatch.html" class="card-action">View Case Study &rarr;</a>
                 </div>
 
-                <div class="card">
+                <div class="card" onclick="window.location.href='cases/heart-failure.html'" style="cursor: pointer;">
                     <div class="card-icon">❤️</div>
                     <h3 class="card-title">Heart Failure Readmission Predictor</h3>
                     <p class="card-desc">
@@ -444,6 +523,7 @@
                         <span class="tag">Machine Learning</span>
                         <span class="tag">Bayesian Networks</span>
                     </div>
+                    <a href="cases/heart-failure.html" class="card-action">View Case Study &rarr;</a>
                 </div>
 
                 <div class="card" style="text-align: center; padding: 4rem 2rem;">

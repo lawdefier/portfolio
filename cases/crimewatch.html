@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CrimeWatch Pakistan: FIR Management | Case Study - Wahaj</title>
+    <meta name="description" content="Full-stack FIR crime reporting and analytics application built with PostgreSQL, Django, and Chart.js.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Outfit:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #120e0e;
+            --text-primary: #f3f4f6;
+            --text-secondary: #a39c9c;
+            --accent-primary: #8b1c1c;
+            --accent-secondary: #d93838;
+            --card-bg: rgba(31, 25, 25, 0.6);
+            --card-border: rgba(255, 255, 255, 0.05);
+            --glass-blur: blur(12px);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            line-height: 1.7;
+            background-image: 
+                radial-gradient(circle at 15% 50%, rgba(139, 28, 28, 0.15), transparent 25%),
+                radial-gradient(circle at 85% 30%, rgba(217, 56, 56, 0.1), transparent 25%);
+            background-attachment: fixed;
+        }
+        h1, h2, h3, h4 { font-family: 'Outfit', sans-serif; }
+        a { color: inherit; text-decoration: none; }
+        
+        .navbar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+            background: rgba(18, 14, 14, 0.85); backdrop-filter: blur(16px);
+            border-bottom: 1px solid var(--card-border); padding: 1rem 0;
+        }
+        .nav-container {
+            max-width: 900px; margin: 0 auto; padding: 0 2rem;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .back-link {
+            font-size: 0.95rem; font-weight: 600; color: var(--accent-secondary);
+            display: inline-flex; align-items: center; gap: 0.5rem; transition: transform 0.2s ease;
+        }
+        .back-link:hover { transform: translateX(-3px); }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 7rem 2rem 4rem; }
+
+        .badge {
+            display: inline-block; padding: 0.35rem 0.85rem; border-radius: 999px;
+            background: rgba(139, 28, 28, 0.25); color: #fca5a5;
+            font-size: 0.85rem; font-weight: 600; margin-bottom: 1.2rem;
+        }
+        h1.title { font-size: clamp(2.2rem, 5vw, 3.5rem); margin-bottom: 1rem; line-height: 1.2; }
+        .subtitle { font-size: 1.2rem; color: var(--text-secondary); margin-bottom: 2.5rem; }
+
+        .meta-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem; padding: 1.5rem 2rem; background: var(--card-bg);
+            border: 1px solid var(--card-border); border-radius: 12px;
+            backdrop-filter: var(--glass-blur); margin-bottom: 3.5rem;
+        }
+        .meta-item label { display: block; font-size: 0.8rem; text-transform: uppercase; color: var(--text-secondary); font-weight: 600; margin-bottom: 0.3rem; }
+        .meta-item span { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
+
+        .content-section { margin-bottom: 3rem; }
+        .content-section h2 { font-size: 1.8rem; margin-bottom: 1.2rem; position: relative; display: inline-block; }
+        .content-section h2::after {
+            content: ''; position: absolute; bottom: -6px; left: 0; width: 35px; height: 3px;
+            background: var(--accent-primary); border-radius: 2px;
+        }
+        .content-section p { color: var(--text-secondary); margin-bottom: 1rem; font-size: 1.05rem; }
+        .content-section ul { color: var(--text-secondary); margin-left: 1.5rem; margin-bottom: 1rem; }
+        .content-section li { margin-bottom: 0.5rem; }
+
+        .code-box {
+            background: #0a0808; border: 1px solid var(--card-border);
+            border-radius: 10px; padding: 1.2rem 1.5rem; font-family: monospace;
+            font-size: 0.9rem; color: #e5e7eb; overflow-x: auto; margin: 1.5rem 0;
+        }
+
+        .btn-group { display: flex; gap: 1rem; flex-wrap: wrap; margin-top: 3rem; }
+        .btn {
+            padding: 0.75rem 1.5rem; border-radius: 8px; font-weight: 600;
+            display: inline-flex; align-items: center; gap: 0.5rem; transition: all 0.3s ease;
+        }
+        .btn-primary { background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary)); color: white; }
+        .btn-secondary { background: rgba(255, 255, 255, 0.05); border: 1px solid var(--card-border); color: var(--text-primary); }
+
+        footer { text-align: center; padding: 3rem 0; border-top: 1px solid var(--card-border); color: var(--text-secondary); margin-top: 4rem; }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../index.html#capstone" class="back-link">&larr; Back to Portfolio</a>
+            <span style="font-weight: 700; font-family: 'Outfit';">CrimeWatch Pakistan</span>
+        </div>
+    </nav>
+
+    <div class="container">
+        <span class="badge">Capstone Project & Web Architecture</span>
+        <h1 class="title">CrimeWatch Pakistan: FIR Management</h1>
+        <p class="subtitle">A full-stack crime reporting system featuring a 3NF PostgreSQL database, secure Django backend, and live analytical visualizations.</p>
+
+        <div class="meta-grid">
+            <div class="meta-item">
+                <label>Role</label>
+                <span>Full-Stack Database Architect</span>
+            </div>
+            <div class="meta-item">
+                <label>Tech Stack</label>
+                <span>PostgreSQL, Django, SQL, Chart.js</span>
+            </div>
+            <div class="meta-item">
+                <label>Normalization</label>
+                <span>Strict 3rd Normal Form (3NF)</span>
+            </div>
+            <div class="meta-item">
+                <label>Features</label>
+                <span>FIR Filing, Status Tracking, Analytics</span>
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Overview</h2>
+            <p>CrimeWatch Pakistan modernizes First Information Report (FIR) logging and case tracking. Law enforcement agencies often suffer from fragmented paper records or un-indexed databases, hindering cross-district investigation and spatial crime tracking.</p>
+        </div>
+
+        <div class="content-section">
+            <h2>Database Architecture & Security</h2>
+            <p>The core of CrimeWatch Pakistan is a robust relational database schema designed to eliminate redundancy while preserving auditability:</p>
+            <ul>
+                <li><strong>Normalized Schema (3NF):</strong> Separated Complainants, Police Stations, Suspects, Officers, and Case Logs into distinct tables with foreign key constraints.</li>
+                <li><strong>Parameterized Raw SQL Queries:</strong> Used parameterized queries in Django to ensure immunity against SQL injection vulnerabilities while achieving maximum query performance.</li>
+                <li><strong>Dynamic Analytics Dashboard:</strong> Integrated Chart.js to render real-time graphs for crime frequency by category, station resolution rates, and monthly trends.</li>
+            </ul>
+
+            <div class="code-box">
+-- Relational Query Example: High-priority unresolved FIR breakdown
+SELECT ps.station_name, COUNT(f.fir_id) AS open_cases, f.crime_category
+FROM fir_records f
+JOIN police_stations ps ON f.station_id = ps.station_id
+WHERE f.status = 'UNDER_INVESTIGATION' AND f.severity_level >= 4
+GROUP BY ps.station_name, f.crime_category
+ORDER BY open_cases DESC;
+            </div>
+        </div>
+
+        <div class="content-section">
+            <h2>Key Outcomes</h2>
+            <p>Delivered a fully operational management portal capable of handling high-volume incident logging with real-time analytics for police station administrators.</p>
+        </div>
+
+        <div class="btn-group">
+            <a href="https://github.com/lawdefier" target="_blank" class="btn btn-secondary">GitHub Repository</a>
+            <a href="../index.html#capstone" class="btn btn-primary">&larr; Back to Capstones</a>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 Wahaj Sajid. Built for FlyRank.</p>
+        </footer>
+    </div>
+
+</body>
+</html>
